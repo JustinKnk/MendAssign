@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Dashboard - MendAssign</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .top-bar {
+            background-color: #007BFF;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 30px;
+            position: relative;
+        }
+
+        .top-bar .logout {
+            background-color: white;
+            color: #007BFF;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            right: 20px;
+        }
+
+        .top-bar .logout:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .section-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+			text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .btn-download {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-upload {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-upload:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-download-all {
+            background-color: #6c757d;
+            color: white;
+            margin-top: 10px;
+            padding: 10px 20px;
+        }
+
+        .btn-download-all:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span>Welcome, Justin!</span>
+        <button class="logout" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+
+    <div class="dashboard">
+        <div class="section-header">Submissions to be corrected:</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Course</th>
+                    <th>Student Name</th>
+                    <th>File Name</th>
+                    <th>Due</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>GBS</td>
+                    <td>Max</td>
+                    <td>GBS_Assignment01.pdf</td>
+                    <td>18 Dec</td>
+                    <td>
+                        <button class="btn btn-download">Download</button>
+                        <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>GBS</td>
+                    <td>Benny</td>
+                    <td>GBS_Assignment02.pdf</td>
+                    <td>18 Dec</td>
+                    <td>
+                        <button class="btn btn-download">Download</button>
+                        <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>ITSEC</td>
+                    <td>Peter</td>
+                    <td>ITSEC_Assignment01.pdf</td>
+                    <td>22 Dec</td>
+                    <td>
+                        <button class="btn btn-download">Download</button>
+                        <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>ITSEC</td>
+                    <td>Lena</td>
+                    <td>ITSEC_Assignment02.pdf</td>
+                    <td>22 Dec</td>
+                    <td>
+                        <button class="btn btn-download">Download</button>
+                        <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-download-all">Download All</button>
+        </div>
+    </div>
+
+    <script>
+        function redirectToUpload() {
+            window.location.href = 'upload_dashboard_tutor.html';
+        }
+    </script>
+</body>
+</html>
