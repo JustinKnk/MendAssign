@@ -1,454 +1,605 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - MendAssign</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        .top-bar {
-            background-color: #007BFF;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            font-size: 30px;
-            position: relative;
-        }
-
-        .top-bar .logout {
-            background-color: white;
-            color: #007BFF;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            position: absolute;
-            right: 20px;
-        }
-
-        .top-bar .logout:hover {
-            background-color: #0056b3;
-            color: white;
-        }
-
-        .dashboard {
-            padding: 20px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ddd;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .section-header span {
-            width: 50%;
-            text-align: center;
-        }
-
-        .section-header .separator {
-            width: 2px;
-            background-color: #ddd;
-            height: 30px;
-            display: inline-block;
-        }
-
-        .content {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .assignments-table {
-            width: 49%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .assignments-table, th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 10px;
-        }
-
-        th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 2px;
-        }
-
-        .btn-upload {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        .btn-upload:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-contact {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-contact:hover {
-            background-color: #1e7e34;
-        }
-
-        .btn-previous {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-previous:hover {
-            background-color: #5a6268;
-        }
-
-        .separator-line {
-            width: 100%;
-            height: 2px;
-            background-color: #ddd;
-            margin: 20px 0;
-        }
-
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .calendar div {
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #fff;
-            min-height: 50px;
-        }
-
-        .calendar .header {
-            font-weight: bold;
-            background-color: #f0f0f0;
-        }
-
-        .calendar .assignment {
-            background-color: #e0f7fa;
-            border-color: #007BFF;
-            font-size: 12px;
-            padding: 5px;
-            margin-top: 5px;
-        }
-
-        .calendar-header {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .courses-table {
-            width: 49%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .courses-table, th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 10px;
-        }
-
-        th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            z-index: 1000;
-            display: none;
-            width: 400px;
-            border-radius: 8px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .popup button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            margin: 5px;
-        }
-
-        .popup button:hover {
-            background-color: #0056b3;
-        }
-
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .contact-popup {
-            min-height: 250px;
-        }
-
-        .contact-popup input, .contact-popup textarea {
-            display: block;
-            width: calc(100% - 20px);
-            margin: 10px auto;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .contact-popup textarea {
-            height: 100px;
-            resize: none;
-        }
-		
-		.error {
-        color: red; /* This ensures the error text is red */
-        font-size: 12px;
-        margin-bottom: 10px;
-		}
-		
-    </style>
-</head>
-<body onload="showUploadPopup()">
-    <div class="top-bar">
-        <span>Welcome, Justin!</span>
-        <button class="logout" onclick="window.location.href='login.html'">Logout</button>
-    </div>
-
-    <div class="dashboard">
-        <div class="section-header">
-            <span>Assignments</span>
-            <div class="separator"></div>
-            <span>All Courses</span>
-        </div>
-
-        <div class="content">
-            <table class="assignments-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Due</th>
-                        <th>Course</th>
-                        <th>Tutor</th>
-                        <th>Actions</th>
-                        <th>Submitted?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td>12 Dec</td>
-                        <td>GBS</td>
-                        <td>Max</td>
-                        <td>
-                            <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
-                            <button class="btn btn-contact" onclick="openContactPopup('Max')">Contact Tutor</button>
-                        </td>
-                        <td>✅</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>13 Dec</td>
-                        <td>Prog I</td>
-                        <td>Moritz</td>
-                        <td>
-                            <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
-                            <button class="btn btn-contact" onclick="openContactPopup('Moritz')">Contact Tutor</button>
-                        </td>
-                        <td>✅</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>19 Dec</td>
-                        <td>Mathe I</td>
-                        <td>Stefan</td>
-                        <td>
-                            <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
-                            <button class="btn btn-contact" onclick="openContactPopup('Stefan')">Contact Tutor</button>
-                        </td>
-                        <td>❌</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>20 Dec</td>
-                        <td>Prog I</td>
-                        <td>Laura</td>
-                        <td>
-                            <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
-                            <button class="btn btn-contact" onclick="openContactPopup('Laura')">Contact Tutor</button>
-                        </td>
-                        <td>✅</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>23 Dec</td>
-                        <td>ITSEC</td>
-                        <td>Ben</td>
-                        <td>
-                            <button class="btn btn-upload" onclick="redirectToUpload()">Upload</button>
-                            <button class="btn btn-contact" onclick="openContactPopup('Ben')">Contact Tutor</button>
-                        </td>
-                        <td>❌</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table class="courses-table">
-                <thead>
-                    <tr>
-                        <th>Course</th>
-                        <th>Points</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>GBS</td>
-                        <td>19/25</td>
-                        <td><button class="btn btn-previous" onclick="redirectToSubmissions('Grundlagen der Betriebssysteme')">Previous Submissions</button></td>
-                    </tr>
-                    <tr>
-                        <td>Prog I</td>
-                        <td>22/25</td>
-                        <td><button class="btn btn-previous" onclick="redirectToSubmissions('Programming I')">Previous Submissions</button></td>
-                    </tr>
-                    <tr>
-                        <td>Mathe I</td>
-                        <td>24.5/25</td>
-                        <td><button class="btn btn-previous" onclick="redirectToSubmissions('Mathematics I')">Previous Submissions</button></td>
-                    </tr>
-                    <tr>
-                        <td>ITSEC</td>
-                        <td>13/25</td>
-                        <td><button class="btn btn-previous" onclick="redirectToSubmissions('IT Security')">Previous Submissions</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="separator-line"></div>
-
-        <div class="calendar-header">December 2024</div>
-        <div class="calendar">
-            <div class="header">SUN</div>
-            <div class="header">MON</div>
-            <div class="header">TUE</div>
-            <div class="header">WED</div>
-            <div class="header">THU</div>
-            <div class="header">FRI</div>
-            <div class="header">SAT</div>
-
-            <div></div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div>
-            <div>8</div><div>9</div><div>10</div><div>11</div><div>12<div class="assignment">GBS #2</div></div><div>13<div class="assignment">Prog I #2</div></div><div>14</div>
-            <div>15</div><div>16</div><div>17</div><div>18</div><div>19<div class="assignment">Mathe I #3</div></div><div>20<div class="assignment">Prog I #3</div></div><div>21</div>
-            <div>22</div><div>23<div class="assignment">ITSEC #3</div></div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div>
-            <div>29</div><div>30</div><div>31</div><div></div><div></div><div></div><div></div>
-        </div>
-    </div>
-
-    <div class="popup-overlay" id="upload-popup-overlay"></div>
-    <div class="popup" id="upload-popup">
-        <p>Your next submission for GBS is due 12 Dec.<br>Would you like to upload now?</p>
-        <button onclick="redirectToUpload()">Upload</button>
-        <button onclick="closeUploadPopup()">Close</button>
-    </div>
-
-    <div class="popup-overlay" id="popup-overlay" onclick="closeContactPopup()"></div>
-    <div class="popup contact-popup" id="popup">
-        <h3>Contact Tutor</h3>
-        <div class="error" id="popup-error" style="display: none;">Subject cannot be empty.</div>
-        <input type="text" id="popup-subject" placeholder="Subject">
-        <textarea id="popup-message" placeholder="Message"></textarea>
-        <button onclick="sendMessage()">Send</button>
-        <button onclick="closeContactPopup()">Close</button>
-    </div>
-
-    <script>
-        function openContactPopup(tutorName) {
-            document.getElementById('popup').style.display = 'block';
-            document.getElementById('popup-overlay').style.display = 'block';
-            document.getElementById('popup-error').style.display = 'none';
-        }
-
-        function closeContactPopup() {
-            document.getElementById('popup').style.display = 'none';
-            document.getElementById('popup-overlay').style.display = 'none';
-        }
-
-        function sendMessage() {
-            const subject = document.getElementById('popup-subject').value;
-            const message = document.getElementById('popup-message').value;
-
-            if (subject.trim() === '') {
-                document.getElementById('popup-error').style.display = 'block';
-                return;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>User Dashboard - MendAssign</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
             }
 
-            alert(`Message sent!`);
-            closeContactPopup();
-        }
+            .top-bar {
+                background-color: #007bff;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px 20px;
+                font-size: 30px;
+                position: relative;
+            }
 
-        function redirectToSubmissions(courseName) {
-            window.location.href = `submissions_dashboard.html?course=${encodeURIComponent(courseName)}`;
-        }
+            .top-bar .logout {
+                background-color: white;
+                color: #007bff;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                position: absolute;
+                right: 20px;
+            }
 
-        function redirectToUpload() {
-            window.location.href = 'upload_dashboard.html';
-        }
+            .top-bar .logout:hover {
+                background-color: #0056b3;
+                color: white;
+            }
 
-        function showUploadPopup() {
-            document.getElementById('upload-popup').style.display = 'block';
-            document.getElementById('upload-popup-overlay').style.display = 'block';
-        }
+            .dashboard {
+                padding: 20px;
+            }
 
-        function closeUploadPopup() {
-            document.getElementById('upload-popup').style.display = 'none';
-            document.getElementById('upload-popup-overlay').style.display = 'none';
-        }
-    </script>
-</body>
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #ddd;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .section-header span {
+                width: 50%;
+                text-align: center;
+            }
+
+            .section-header .separator {
+                width: 2px;
+                background-color: #ddd;
+                height: 30px;
+                display: inline-block;
+            }
+
+            .content {
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .assignments-table {
+                width: 49%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .assignments-table,
+            th,
+            td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 10px;
+            }
+
+            th {
+                background-color: #f0f0f0;
+                font-weight: bold;
+            }
+
+            .btn {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin: 2px;
+            }
+
+            .btn-upload {
+                background-color: #007bff;
+                color: white;
+            }
+
+            .btn-upload:hover {
+                background-color: #0056b3;
+            }
+
+            .btn-contact {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .btn-contact:hover {
+                background-color: #1e7e34;
+            }
+
+            .btn-previous {
+                background-color: #6c757d;
+                color: white;
+            }
+
+            .btn-previous:hover {
+                background-color: #5a6268;
+            }
+
+            .separator-line {
+                width: 100%;
+                height: 2px;
+                background-color: #ddd;
+                margin: 20px 0;
+            }
+
+            .calendar {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .calendar div {
+                border: 1px solid #ddd;
+                padding: 10px;
+                background-color: #fff;
+                min-height: 50px;
+            }
+
+            .calendar .header {
+                font-weight: bold;
+                background-color: #f0f0f0;
+            }
+
+            .calendar .assignment {
+                background-color: #e0f7fa;
+                border-color: #007bff;
+                font-size: 12px;
+                padding: 5px;
+                margin-top: 5px;
+            }
+
+            .calendar-header {
+                text-align: center;
+                font-weight: bold;
+                font-size: 18px;
+                margin: 10px 0;
+            }
+
+            .courses-table {
+                width: 49%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .courses-table,
+            th,
+            td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 10px;
+            }
+
+            th {
+                background-color: #f0f0f0;
+                font-weight: bold;
+            }
+
+            .popup {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                border: 1px solid #ddd;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                z-index: 1000;
+                display: none;
+                width: 400px;
+                border-radius: 8px;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .popup button {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                background-color: #007bff;
+                color: white;
+                margin: 5px;
+            }
+
+            .popup button:hover {
+                background-color: #0056b3;
+            }
+
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                display: none;
+            }
+
+            .contact-popup {
+                min-height: 250px;
+            }
+
+            .contact-popup input,
+            .contact-popup textarea {
+                display: block;
+                width: calc(100% - 20px);
+                margin: 10px auto;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            .contact-popup textarea {
+                height: 100px;
+                resize: none;
+            }
+
+            .error {
+                color: red; /* This ensures the error text is red */
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body onload="showUploadPopup()">
+        <div class="top-bar">
+            <span>Welcome, Justin!</span>
+            <button class="logout" onclick="window.location.href='login.html'">
+                Logout
+            </button>
+        </div>
+
+        <div class="dashboard">
+            <div class="section-header">
+                <span>Assignments</span>
+                <div class="separator"></div>
+                <span>All Courses</span>
+            </div>
+
+            <div class="content">
+                <table class="assignments-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Due</th>
+                            <th>Course</th>
+                            <th>Tutor</th>
+                            <th>Actions</th>
+                            <th>Submitted?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td>12 Dec</td>
+                            <td>GBS</td>
+                            <td>Max</td>
+                            <td>
+                                <button
+                                    class="btn btn-upload"
+                                    onclick="redirectToUpload()"
+                                >
+                                    Upload
+                                </button>
+                                <button
+                                    class="btn btn-contact"
+                                    onclick="openContactPopup('Max')"
+                                >
+                                    Contact Tutor
+                                </button>
+                            </td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>13 Dec</td>
+                            <td>Prog I</td>
+                            <td>Moritz</td>
+                            <td>
+                                <button
+                                    class="btn btn-upload"
+                                    onclick="redirectToUpload()"
+                                >
+                                    Upload
+                                </button>
+                                <button
+                                    class="btn btn-contact"
+                                    onclick="openContactPopup('Moritz')"
+                                >
+                                    Contact Tutor
+                                </button>
+                            </td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>19 Dec</td>
+                            <td>Mathe I</td>
+                            <td>Stefan</td>
+                            <td>
+                                <button
+                                    class="btn btn-upload"
+                                    onclick="redirectToUpload()"
+                                >
+                                    Upload
+                                </button>
+                                <button
+                                    class="btn btn-contact"
+                                    onclick="openContactPopup('Stefan')"
+                                >
+                                    Contact Tutor
+                                </button>
+                            </td>
+                            <td>❌</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>20 Dec</td>
+                            <td>Prog I</td>
+                            <td>Laura</td>
+                            <td>
+                                <button
+                                    class="btn btn-upload"
+                                    onclick="redirectToUpload()"
+                                >
+                                    Upload
+                                </button>
+                                <button
+                                    class="btn btn-contact"
+                                    onclick="openContactPopup('Laura')"
+                                >
+                                    Contact Tutor
+                                </button>
+                            </td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>23 Dec</td>
+                            <td>ITSEC</td>
+                            <td>Ben</td>
+                            <td>
+                                <button
+                                    class="btn btn-upload"
+                                    onclick="redirectToUpload()"
+                                >
+                                    Upload
+                                </button>
+                                <button
+                                    class="btn btn-contact"
+                                    onclick="openContactPopup('Ben')"
+                                >
+                                    Contact Tutor
+                                </button>
+                            </td>
+                            <td>❌</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Points</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GBS</td>
+                            <td>19/25</td>
+                            <td>
+                                <button
+                                    class="btn btn-previous"
+                                    onclick="redirectToSubmissions('Grundlagen der Betriebssysteme')"
+                                >
+                                    Previous Submissions
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Prog I</td>
+                            <td>22/25</td>
+                            <td>
+                                <button
+                                    class="btn btn-previous"
+                                    onclick="redirectToSubmissions('Programming I')"
+                                >
+                                    Previous Submissions
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mathe I</td>
+                            <td>24.5/25</td>
+                            <td>
+                                <button
+                                    class="btn btn-previous"
+                                    onclick="redirectToSubmissions('Mathematics I')"
+                                >
+                                    Previous Submissions
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ITSEC</td>
+                            <td>13/25</td>
+                            <td>
+                                <button
+                                    class="btn btn-previous"
+                                    onclick="redirectToSubmissions('IT Security')"
+                                >
+                                    Previous Submissions
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="separator-line"></div>
+
+            <div class="calendar-header">December 2024</div>
+            <div class="calendar">
+                <div class="header">SUN</div>
+                <div class="header">MON</div>
+                <div class="header">TUE</div>
+                <div class="header">WED</div>
+                <div class="header">THU</div>
+                <div class="header">FRI</div>
+                <div class="header">SAT</div>
+
+                <div></div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>
+                    12
+                    <div class="assignment">GBS #2</div>
+                </div>
+                <div>
+                    13
+                    <div class="assignment">Prog I #2</div>
+                </div>
+                <div>14</div>
+                <div>15</div>
+                <div>16</div>
+                <div>17</div>
+                <div>18</div>
+                <div>
+                    19
+                    <div class="assignment">Mathe I #3</div>
+                </div>
+                <div>
+                    20
+                    <div class="assignment">Prog I #3</div>
+                </div>
+                <div>21</div>
+                <div>22</div>
+                <div>
+                    23
+                    <div class="assignment">ITSEC #3</div>
+                </div>
+                <div>24</div>
+                <div>25</div>
+                <div>26</div>
+                <div>27</div>
+                <div>28</div>
+                <div>29</div>
+                <div>30</div>
+                <div>31</div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <div class="popup-overlay" id="upload-popup-overlay"></div>
+        <div class="popup" id="upload-popup">
+            <p>
+                Your next submission for GBS is due 12 Dec.<br />Would you like
+                to upload now?
+            </p>
+            <button onclick="redirectToUpload()">Upload</button>
+            <button onclick="closeUploadPopup()">Close</button>
+        </div>
+
+        <div
+            class="popup-overlay"
+            id="popup-overlay"
+            onclick="closeContactPopup()"
+        ></div>
+        <div class="popup contact-popup" id="popup">
+            <h3>Contact Tutor</h3>
+            <div class="error" id="popup-error-message" style="display: none">
+                Message cannot be empty.
+            </div>
+            <div class="error" id="popup-error" style="display: none">
+                Subject cannot be empty.
+            </div>
+            <input type="text" id="popup-subject" placeholder="Subject" />
+            <textarea id="popup-message" placeholder="Message"></textarea>
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="closeContactPopup()">Close</button>
+        </div>
+
+        <script>
+            function openContactPopup(tutorName) {
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('popup-overlay').style.display =
+                    'block';
+                document.getElementById('popup-error').style.display = 'none';
+            }
+
+            function closeContactPopup() {
+                document.getElementById('popup').style.display = 'none';
+                document.getElementById('popup-overlay').style.display = 'none';
+            }
+
+            function sendMessage() {
+                const subject = document.getElementById('popup-subject').value;
+                const message = document.getElementById('popup-message').value;
+
+                if (subject.trim() === '') {
+                    document.getElementById('popup-error').style.display =
+                        'block';
+                    return;
+                }
+                if (message.trim() === '') {
+                    document.getElementById(
+                        'popup-error-message'
+                    ).style.display = 'block';
+                    return;
+                }
+
+                alert(`Message sent!`);
+                closeContactPopup();
+            }
+
+            function redirectToSubmissions(courseName) {
+                window.location.href = `submissions_dashboard.html?course=${encodeURIComponent(courseName)}`;
+            }
+
+            function redirectToUpload() {
+                window.location.href = 'upload_dashboard.html';
+            }
+
+            function showUploadPopup() {
+                document.getElementById('upload-popup').style.display = 'block';
+                document.getElementById('upload-popup-overlay').style.display =
+                    'block';
+            }
+
+            function closeUploadPopup() {
+                document.getElementById('upload-popup').style.display = 'none';
+                document.getElementById('upload-popup-overlay').style.display =
+                    'none';
+            }
+        </script>
+    </body>
 </html>
