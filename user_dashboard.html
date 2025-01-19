@@ -251,9 +251,222 @@
             }
 
             .error {
-                color: red; /* This ensures the error text is red */
+                color: red;
                 font-size: 12px;
                 margin-bottom: 10px;
+            }
+
+            .Btn {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 45px;
+                height: 45px;
+                border-radius: calc(45px/2);
+                border: none;
+                cursor: pointer;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                overflow: hidden;
+                transition-duration: .3s;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+                background: linear-gradient(144deg,#af40ff,#5b42f3 50%,#00ddeb);
+            }
+
+            .Btn .icon {
+                width: 25px;
+                height: 25px;
+                transition-duration: .3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                filter: invert(100%);
+            }
+
+            .Btn .icon img {
+                width: 100%;
+                height: auto;
+            }
+
+            .Btn .text {
+                opacity: 0;
+                color: white;
+                font-size: 1.4em;
+                font-weight: 500;
+                transition-duration: .3s;
+                margin-left: 10px;
+            }
+
+            .Btn:hover {
+                width: 125px;
+                transition-duration: .3s;
+            }
+
+            .Btn:hover .icon {
+                width: 25px;
+                height: 25px;
+                transition-duration: .3s;
+            }
+
+            .Btn:hover .text {
+                opacity: 1;
+                transition-duration: .3s;
+            }
+
+            .Btn:active {
+                transform: translate(2px ,2px);
+            }
+
+            .chatbox {
+                width: 300px;
+                height: 400px;
+                background-color: #343541;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                display: none;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .chatbox-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                background-color: #40414F;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+
+            .chatbox-header a {
+                color: #b0b0b0;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .chatbox-header .close {
+                cursor: pointer;
+                position: relative;
+                right: 20px;
+            }
+
+            .chatbox-header .line {
+                width: 20px;
+                height: 3px;
+                background-color: #6B6C7B;
+                border-radius: 30px;
+                position: absolute;
+            }
+
+            .chatbox-header .line.one {
+                transform: rotate(45deg);
+            }
+
+            .chatbox-header .line.two {
+                transform: rotate(135deg);
+            }
+
+            .chatbox-messages {
+                flex: 1;
+                padding: 10px;
+                overflow-y: auto;
+                background-color: #343541;
+            }
+
+            .chatbox-message {
+                color: #b0b0b0;
+                background-color: #40414F;
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                display: inline-block;
+            }
+
+            .chatbox-input {
+                display: flex;
+                padding: 10px;
+                background-color: #40414F;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+
+            .chatbox-input input {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                margin-right: 10px;
+                background-color: #343541;
+                color: white;
+            }
+
+            .chatbox-input input::placeholder {
+                color: #828E9E;
+            }
+
+            .chatbox-input button {
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+            }
+
+            .chatbox-input button:hover {
+                background-color: #0056b3;
+            }
+
+            .chat-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+                border-radius: 50px;
+                border: none;
+                cursor: pointer;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                overflow: hidden;
+                transition: width 0.3s, background-color 0.3s;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+                background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+            }
+
+            .chat-btn img {
+                width: 25px;
+                height: 25px;
+                filter: invert(100%);
+                transition: width 0.3s, height 0.3s, transform 0.3s;
+                transform: translateX(+23px);
+            }
+
+            .chat-btn:hover img {
+                transform: translateX(0);
+            }
+
+            .chat-btn:hover {
+                width: 125px;
+                background-color: #5b42f3;
+            }
+
+            .chat-btn .text {
+                opacity: 0;
+                color: white;
+                font-size: 1.4em;
+                font-weight: 500;
+                transition: opacity 0.3s;
+                margin-left: 10px;
+            }
+
+            .chat-btn:hover .text {
+                opacity: 1;
             }
         </style>
     </head>
@@ -548,6 +761,28 @@
             <button onclick="closeContactPopup()">Close</button>
         </div>
 
+        <button class="chat-btn" onclick="openChatbox()">
+            <img src="ai_chat.png" alt="AI Chat" />
+            <div class="text">AI-Chat</div>
+        </button>
+
+        <div class="chatbox" id="chatbox">
+            <div class="chatbox-header">
+                <a>LUH AI</a>
+                <div class="close" onclick="closeChatbox()">
+                    <div class="line one"></div>
+                    <div class="line two"></div>
+                </div>
+            </div>
+            <div class="chatbox-messages">
+                <div class="chatbox-message">Hello Justin, I am the LUH AI, ready to answer your questions about any assignment. What can I help you with?</div>
+            </div>
+            <div class="chatbox-input">
+                <input type="text" placeholder="Send a message..." />
+                <button>Send</button>
+            </div>
+        </div>
+
         <script>
             function openContactPopup(tutorName) {
                 document.getElementById('popup').style.display = 'block';
@@ -599,6 +834,14 @@
                 document.getElementById('upload-popup').style.display = 'none';
                 document.getElementById('upload-popup-overlay').style.display =
                     'none';
+            }
+
+            function openChatbox() {
+                document.getElementById('chatbox').style.display = 'flex';
+            }
+
+            function closeChatbox() {
+                document.getElementById('chatbox').style.display = 'none';
             }
         </script>
     </body>
