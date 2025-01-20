@@ -127,6 +127,15 @@
                 background-color: #5a6268;
             }
 
+            .btn-download {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .btn-download:hover {
+                background-color: #388e3c;
+            }
+
             .separator-line {
                 width: 100%;
                 height: 2px;
@@ -160,6 +169,11 @@
                 font-size: 12px;
                 padding: 5px;
                 margin-top: 5px;
+            }
+
+            .calendar .current-day {
+                background-color: #fff9a1;
+                border-color: #fbc02d;
             }
 
             .calendar-header {
@@ -505,6 +519,12 @@
                             <td>Max</td>
                             <td>
                                 <button
+                                    class="btn btn-download"
+                                    onclick="downloadAssignment('GBS')"
+                                >
+                                    Download Assignment
+                                </button>
+                                <button
                                     class="btn btn-upload"
                                     onclick="redirectToUpload()"
                                 >
@@ -525,6 +545,12 @@
                             <td>Prog I</td>
                             <td>Moritz</td>
                             <td>
+                                <button
+                                    class="btn btn-download"
+                                    onclick="downloadAssignment('Prog I')"
+                                >
+                                    Download Assignment
+                                </button>
                                 <button
                                     class="btn btn-upload"
                                     onclick="redirectToUpload()"
@@ -547,6 +573,12 @@
                             <td>Stefan</td>
                             <td>
                                 <button
+                                    class="btn btn-download"
+                                    onclick="downloadAssignment('Mathe I')"
+                                >
+                                    Download Assignment
+                                </button>
+                                <button
                                     class="btn btn-upload"
                                     onclick="redirectToUpload()"
                                 >
@@ -568,6 +600,12 @@
                             <td>Laura</td>
                             <td>
                                 <button
+                                    class="btn btn-download"
+                                    onclick="downloadAssignment('Prog I')"
+                                >
+                                    Download Assignment
+                                </button>
+                                <button
                                     class="btn btn-upload"
                                     onclick="redirectToUpload()"
                                 >
@@ -588,6 +626,12 @@
                             <td>ITSEC</td>
                             <td>Ben</td>
                             <td>
+                                <button
+                                    class="btn btn-download"
+                                    onclick="downloadAssignment('ITSEC')"
+                                >
+                                    Download Assignment
+                                </button>
                                 <button
                                     class="btn btn-upload"
                                     onclick="redirectToUpload()"
@@ -688,7 +732,7 @@
                 <div>7</div>
                 <div>8</div>
                 <div>9</div>
-                <div>10</div>
+                <div class="current-day">10</div> 
                 <div>11</div>
                 <div>
                     12
@@ -842,6 +886,10 @@
 
             function closeChatbox() {
                 document.getElementById('chatbox').style.display = 'none';
+            }
+
+            function downloadAssignment(courseName) {
+                alert(`Downloading assignment for ${courseName}`);
             }
         </script>
     </body>
