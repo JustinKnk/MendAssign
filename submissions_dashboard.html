@@ -214,7 +214,7 @@
                                 class="btn contact-btn"
                                 onclick="openContactPopup('Max')"
                             >
-                                Contact
+                                Contact Tutor
                             </button>
                         </td>
                     </tr>
@@ -229,7 +229,7 @@
                                 class="btn contact-btn"
                                 onclick="openContactPopup('Max')"
                             >
-                                Contact
+                                Contact Tutor
                             </button>
                         </td>
                     </tr>
@@ -244,7 +244,7 @@
                                 class="btn contact-btn"
                                 onclick="openContactPopup('Max')"
                             >
-                                Contact
+                                Contact Tutor
                             </button>
                         </td>
                     </tr>
@@ -259,7 +259,7 @@
                                 class="btn contact-btn"
                                 onclick="openContactPopup('Max')"
                             >
-                                Contact
+                                Contact Tutor
                             </button>
                         </td>
                     </tr>
@@ -297,6 +297,9 @@
         ></div>
         <div class="popup" id="popup">
             <h3>Contact Tutor</h3>
+            <div class="error" id="error-message" style="display: none">
+                Message cannot be empty.
+            </div>
             <div class="error" id="popup-error" style="display: none">
                 Subject cannot be empty.
             </div>
@@ -326,6 +329,12 @@
                 if (subject.trim() === '') {
                     document.getElementById('popup-error').style.display =
                         'block';
+                    return;
+                }
+                if (message.trim() === '') {
+                    document.getElementById(
+                        'error-message'
+                    ).style.display = 'block';
                     return;
                 }
 
